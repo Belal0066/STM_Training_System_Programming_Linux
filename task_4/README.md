@@ -1,6 +1,6 @@
 # LQ_shell_optm
 
-This is a basic shell implementation in C designed to execute both internal and external commands. It supports several built-in commands and can handle executing external programs.
+This is a basic shell implementation in C with memory optmimization designed to execute both internal and external commands. It supports several built-in commands and can handle executing external programs.
 
 ## Internal Commands
 
