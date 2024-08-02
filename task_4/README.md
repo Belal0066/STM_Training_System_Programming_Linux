@@ -31,11 +31,13 @@ This is a basic shell implementation in C designed to execute both internal and 
 - Handling child processes prevents zombie processes and ensures that system resources are released once the child process has terminated.
 
 ## Usage
-
+#### compilation
 ```bash
 belal@Ubuntu:~/Desktop/st/4$ gcc -o lq *.c
 belal@Ubuntu:~/Desktop/st/4$ ./lq
-
+```
+#### list of commands
+```bash
 THE SHELL IS ALIVE! Type 'help' for a list of commands.
 eb3t ya ghaly >>> help
 Supported commands are:
@@ -49,22 +51,28 @@ Supported commands are:
 8- exitlq = quit the shell
 9- help = print all supported commands
 10- external commands = type names directly
-
+```
+#### cd command
+```bash
 eb3t ya ghaly >>> pwd
 /home/belal/Desktop/st/4
-
+eb3t ya ghaly >>> 
 eb3t ya ghaly >>> cd /home/belal/Desktop/st
 Directory changed to /home/belal/Desktop/st
-
+eb3t ya ghaly >>> 
 eb3t ya ghaly >>> pwd
 /home/belal/Desktop/st
-
+```
+#### type command
+```bash
 eb3t ya ghaly >>> type pwd
 pwd is an external command (executable)
-
+eb3t ya ghaly >>> 
 eb3t ya ghaly >>> type pwdlq
 pwdlq is an internal command (builtin)
-
+```
+#### envir command
+```bash
 eb3t ya ghaly >>> envir
 SHELL=/bin/bash
 SESSION_MANAGER=local/Ubuntu:@/tmp/.ICE-unix/925,unix/Ubuntu:/tmp/.ICE-unix/925
@@ -123,6 +131,5 @@ GDMSESSION=ubuntu
 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus,guid=54104cfbe1d822be1aeeda1466acaa8f
 LC_NUMERIC=en_GB.UTF-8
 _=./lq
-
-eb3t ya ghaly >>> exitlq
-goodbye
+eb3t ya ghaly >>> 
+```
