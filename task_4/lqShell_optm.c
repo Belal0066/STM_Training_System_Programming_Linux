@@ -1,4 +1,3 @@
-
 #include <sys/wait.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -46,27 +45,105 @@ void parse_input(char *input, char ***args, int *arg_count)
     (*args)[*arg_count] = NULL;
 }
 
-void execute_command(char **args)
-{
+
+
+
+#define MAX_ARGS 64
+
+void execute_command(char **argv) {
+    int input_fd = STDIN_FILENO;
+    int output_fd = STDOUT_FILENO;
+    int error_fd = STDERR_FILENO;
+    int i, j;
+    char *args[MAX_ARGS];
+
+    // Copy arguments and look for redirection
+    for (i = 0, j = 0; argv[i] != NULL && j < MAX_ARGS - 1; i++) {
+        if (strcmp(argv[i], "<") == 0) {
+            // Input redirection
+            i++;
+            if (argv[i] == NULL) {
+                fprintf(stderr, "Error: Missing input file\n");
+                return;
+            }
+            input_fd = open(argv[i], O_RDONLY);
+            if (input_fd == -1) {
+                perror("Error opening input file");
+                return;
+            }
+        } else if (strcmp(argv[i], ">") == 0) {
+            // Output redirection
+            i++;
+            if (argv[i] == NULL) {
+                fprintf(stderr, "Error: Missing output file\n");
+                return;
+            }
+            output_fd = open(argv[i], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+            if (output_fd == -1) {
+                perror("Error opening output file");
+                return;
+            }
+        } else if (strcmp(argv[i], ">>") == 0) {
+            // Output redirection (append)
+            i++;
+            if (argv[i] == NULL) {
+                fprintf(stderr, "Error: Missing output file\n");
+                return;
+            }
+            output_fd = open(argv[i], O_WRONLY | O_CREAT | O_APPEND, 0644);
+            if (output_fd == -1) {
+                perror("Error opening output file");
+                return;
+            }
+        } else if (strcmp(argv[i], "2>") == 0) {
+            // Error redirection
+            i++;
+            if (argv[i] == NULL) {
+                fprintf(stderr, "Error: Missing error file\n");
+                return;
+            }
+            error_fd = open(argv[i], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+            if (error_fd == -1) {
+                perror("Error opening error file");
+                return;
+            }
+        } else {
+            args[j++] = argv[i];
+        }
+    }
+    args[j] = NULL;
+
     pid_t pid = fork();
 
-    if (pid == -1)
-    {
+    if (pid == -1) {
         perror("fork");
         return;
-    }
-    else if (pid == 0)
-    {
+    } else if (pid == 0) {
+        // Child process
+        if (input_fd != STDIN_FILENO) {
+            dup2(input_fd, STDIN_FILENO);
+            close(input_fd);
+        }
+        if (output_fd != STDOUT_FILENO) {
+            dup2(output_fd, STDOUT_FILENO);
+            close(output_fd);
+        }
+        if (error_fd != STDERR_FILENO) {
+            dup2(error_fd, STDERR_FILENO);
+            close(error_fd);
+        }
+
         execvp(args[0], args);
-
-        printf("Eh da ya ghaly (o_-)? %s\n", args[0]);
-
+        perror("execvp");
         exit(EXIT_FAILURE);
-    }
-    else
-    {
+    } else {
+        // Parent process
         int status;
         waitpid(pid, &status, 0);
+
+        if (input_fd != STDIN_FILENO) close(input_fd);
+        if (output_fd != STDOUT_FILENO) close(output_fd);
+        if (error_fd != STDERR_FILENO) close(error_fd);
     }
 }
 
