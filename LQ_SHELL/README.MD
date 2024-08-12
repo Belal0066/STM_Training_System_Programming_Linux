@@ -50,8 +50,8 @@ Supported commands are:
 5- cd = change the current working dir
 6- type = print the type of the command (internal, external, unsupported)
 7- envir = print all the enviroment variable
-8- information about the system's memory usage
-9- shows how long the system has been running and the time spent in the idle process.
+8- freelq = information about the system's memory usage
+9- uptimelq = shows how long the system has been running and the time spent in the idle process.  
 10- exitlq = quit the shell
 11- help = print all supported commands
 12- external commands = type names directly
