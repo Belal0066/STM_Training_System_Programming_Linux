@@ -11,6 +11,8 @@ This is a basic shell implementation in C with memory optimization designed to e
 - **cd <directory>**: Change the current working directory.
 - **type <command>**: Determine if a command is internal, external, or unsupported.
 - **envir**: Print all environment variables.
+- **freelq**: information about the system's memory usage.
+- **uptimelq**:shows how long the system has been running and the time spent in the idle process.
 - **exitlq**: Exit the shell.
 - **help**: Display a list of supported commands.
 
@@ -48,11 +50,11 @@ Supported commands are:
 5- cd = change the current working dir
 6- type = print the type of the command (internal, external, unsupported)
 7- envir = print all the enviroment variable
-information about the system's memory usage
-shows how long the system has been running and the time spent in the idle process.
-8- exitlq = quit the shell
-9- help = print all supported commands
-10- external commands = type names directly
+8- information about the system's memory usage
+9- shows how long the system has been running and the time spent in the idle process.
+10- exitlq = quit the shell
+11- help = print all supported commands
+12- external commands = type names directly
 ```
 ##### freelq Command
 ```bash
