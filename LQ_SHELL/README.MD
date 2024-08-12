@@ -122,16 +122,14 @@ eb3t ya ghaly >>>
 ```
 ### Upcoming Updates
 
-#### `todo`:
+#### <span style="color:blue;">`todo`</span>:
 - [ ] **Multi-Piping**: Implement multi-piping functionality to allow multiple commands to be piped together seamlessly.
 - [ ] **Redirection with Piping**: Add support for input and output redirection in conjunction with piping.
 
-#### `fix`:
+#### <span style="color:red;">`fix`</span>:
 - [ ] **Echo Errors**: Address and resolve any existing errors related to the echo command.
 - [ ] **Segmentation Fault Errors**: Correct segmentation fault errors to enhance stability.
 
-#### `Improvements`:
+#### <span style="color:green;">`Improvements`</span>:
 - [ ] **Optimization**: Improve performance by using more system calls instead of the standard C library (libc) functions.
-
-
 
