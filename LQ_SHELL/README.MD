@@ -1,6 +1,6 @@
 # LQ_SEHLL
 
-This is a basic shell implementation in C with memory optimization designed to execute both internal and external commands. It supports several built-in commands and can handle executing external programs.
+This is a basic shell implementation in C with memory optmimization designed to execute both internal and external commands. It supports several built-in commands and can handle executing external programs.
 
 ## Internal Commands
 
@@ -31,9 +31,73 @@ This is a basic shell implementation in C with memory optimization designed to e
 - Handling child processes prevents zombie processes and ensures that system resources are released once the child process has terminated.
 
 ## Usage
-
-#### Compilation
-
+#### compilation
 ```bash
 belal@Ubuntu:~/Desktop/st/lqshell$ gcc -o lq *.c
 belal@Ubuntu:~/Desktop/st/lqshell$ ./lq
+```
+#### some commands
+```bash
+THE SHELL IS ALIVE! Type 'help' for a list of commands.
+eb3t ya ghaly >>> help
+Supported commands are:
+1- pwdlq = print working directory
+2- echolq = print a user input string
+3- cplq = copy a file to another file
+4- mvlq = move a file to another dir
+5- cd = change the current working dir
+6- type = print the type of the command (internal, external, unsupported)
+7- envir = print all the enviroment variable
+8- exitlq = quit the shell
+9- help = print all supported commands
+10- external commands = type names directly
+```
+##### Input Redirection
+```bash
+eb3t ya ghaly >>> cat testInput
+2
+4
+5
+2
+1
+eb3t ya ghaly >>> sort < testInput
+1
+2
+2
+4
+5
+eb3t ya ghaly >>> 
+```
+
+##### Output Redirection
+```bash
+eb3t ya ghaly >>> pwd
+/home/belal/Desktop/st/lqshell
+eb3t ya ghaly >>> pwd > testOutput 
+eb3t ya ghaly >>> cat testOutput
+/home/belal/Desktop/st/lqshell
+eb3t ya ghaly >>> 
+```
+
+##### Error Redirection
+```bash
+eb3t ya ghaly >>> ls lol
+ls: cannot access 'lol': No such file or directory
+eb3t ya ghaly >>> ls lol 2> testError
+eb3t ya ghaly >>> cat testError
+ls: cannot access 'lol': No such file or directory
+eb3t ya ghaly >>> 
+```
+
+##### Piping `|`
+```bash
+eb3t ya ghaly >>> ls
+commands.c  commands.h	lq  lqshell_optm.c  notNamed  README.md  testError  testInput  testOutput
+eb3t ya ghaly >>> ls | grep .c
+commands.c
+lqshell_optm.c
+eb3t ya ghaly >>> 
+```
+
+
+
