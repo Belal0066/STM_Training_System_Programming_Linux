@@ -1,6 +1,6 @@
 # LQ_SEHLL
 
-This is a basic shell implementation in C with memory optmimization designed to execute both internal and external commands. It supports several built-in commands and can handle executing external programs.
+This is a basic shell implementation in C with memory optimization designed to execute internal and external commands. It supports several built-in commands and can handle executing external programs.
 
 ## Internal Commands
 
@@ -36,7 +36,7 @@ This is a basic shell implementation in C with memory optmimization designed to 
 belal@Ubuntu:~/Desktop/st/lqshell$ gcc -o lq *.c
 belal@Ubuntu:~/Desktop/st/lqshell$ ./lq
 ```
-#### some commands
+#### some commands and features 
 ```bash
 THE SHELL IS ALIVE! Type 'help' for a list of commands.
 eb3t ya ghaly >>> help
@@ -48,10 +48,30 @@ Supported commands are:
 5- cd = change the current working dir
 6- type = print the type of the command (internal, external, unsupported)
 7- envir = print all the enviroment variable
+information about the system's memory usage
+shows how long the system has been running and the time spent in the idle process.
 8- exitlq = quit the shell
 9- help = print all supported commands
 10- external commands = type names directly
 ```
+##### freelq Command
+```bash
+eb3t ya ghaly >>> freelq
+              total        used        free      shared  buff/cache   available
+Mem:        3354364     1721020      267152      108012     1366192     1349756
+Swap:       2097148      398172     1698976
+eb3t ya ghaly >>> 
+```
+
+##### uptimelq Command
+```bash
+eb3t ya ghaly >>> uptimelq
+Uptime: 00:29:03
+Time Idle: 01:16:31
+eb3t ya ghaly >>> 
+```
+
+
 ##### Input Redirection
 ```bash
 eb3t ya ghaly >>> cat testInput
