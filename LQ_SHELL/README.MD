@@ -1,4 +1,4 @@
-# LQ_SEHLL
+# LQ_SHELL
 
 This is a basic shell implementation in C with memory optimization designed to execute internal and external commands. It supports several built-in commands and can handle executing external programs.
 
