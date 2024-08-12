@@ -114,7 +114,7 @@ eb3t ya ghaly >>>
 ##### Piping `|`
 ```bash
 eb3t ya ghaly >>> ls
-commands.c  commands.h	lq  lqshell_optm.c  notNamed  README.md  testError  testInput  testOutput
+commands.c  commands.h	lq  lqshell_optm.c testError  testInput  testOutput
 eb3t ya ghaly >>> ls | grep .c
 commands.c
 lqshell_optm.c
@@ -122,14 +122,13 @@ eb3t ya ghaly >>>
 ```
 ### Upcoming Updates
 
-#### <span style="color:blue;">`todo`</span>:
+#### `todo`:
 - [ ] **Multi-Piping**: Implement multi-piping functionality to allow multiple commands to be piped together seamlessly.
-- [ ] **Redirection with Piping**: Add support for input and output redirection in conjunction with piping.
+- [ ] **Redirection with Piping**: Add input and output redirection support in conjunction with piping.
 
-#### <span style="color:red;">`fix`</span>:
+#### `fix`:
 - [ ] **Echo Errors**: Address and resolve any existing errors related to the echo command.
 - [ ] **Segmentation Fault Errors**: Correct segmentation fault errors to enhance stability.
 
-#### <span style="color:green;">`Improvements`</span>:
+#### `Improvements`:
 - [ ] **Optimization**: Improve performance by using more system calls instead of the standard C library (libc) functions.
-
