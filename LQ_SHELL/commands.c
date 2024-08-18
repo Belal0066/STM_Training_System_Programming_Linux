@@ -14,6 +14,8 @@
 #define UPTIME_FILE "/proc/uptime"
 #define MEMINFO_FILE "/proc/meminfo"
 #define MAX_LINE 256
+#define BUFFER_SIZE 1024
+
 
 void pwd_command()
 {
@@ -28,14 +30,26 @@ void pwd_command()
     }
 }
 
-void echo_command(char **argv)
-{
-    for (int i = 1; argv[i] != NULL; i++)
-    {
-        printf("%s ", argv[i]);
+// Function to remove surrounding quotes from a string
+void remove_quotes(char *str) {
+    size_t len = strlen(str);
+    if (len > 1 && (str[0] == '"' && str[len - 1] == '"' || str[0] == '\'' && str[len - 1] == '\'')) {
+        memmove(str, str + 1, len - 2);
+        str[len - 2] = '\0';
+    }
+}
+
+void echo_command(char **argv) {
+    for (int i = 1; argv[i] != NULL; i++) {
+        char *arg = argv[i];
+        
+        remove_quotes(arg);
+        
+        printf("%s ", arg);
     }
     printf("\n");
 }
+
 
 void cp_command(char **argv)
 {
@@ -303,38 +317,68 @@ void uptime_command() {
     printf("Time Idle: %s\n", idle_s);
 }
 
+
+
 typedef struct {
     unsigned long MemTotal, SwapTotal, MemFree, SwapFree, Shmem, Buffers, Cached, SReclaimable, MemAvailable;
 } MemInfo;
 
+
+
 unsigned long read_meminfo_value(const char *pattern) {
-    FILE *fp;
-    char line[MAX_LINE];
+    int fd;
+    char buffer[BUFFER_SIZE];
+    ssize_t bytes_read;
+    size_t offset = 0;
     regex_t regex;
     regmatch_t matches[2];
     unsigned long value = 0;
 
-    fp = fopen(MEMINFO_FILE, "r");
-    if (fp == NULL) {
+    // Open the file using the open system call
+    fd = open(MEMINFO_FILE, O_RDONLY);
+    if (fd < 0) {
         perror("Error opening /proc/meminfo");
         return 0;
     }
 
+    // Compile the regular expression
     if (regcomp(&regex, pattern, REG_EXTENDED) != 0) {
         fprintf(stderr, "Error compiling regex\n");
-        fclose(fp);
+        close(fd);
         return 0;
     }
 
-    while (fgets(line, sizeof(line), fp)) {
-        if (regexec(&regex, line, 2, matches, 0) == 0) {
-            sscanf(line + matches[1].rm_so, "%lu", &value);
-            break;
+    while ((bytes_read = read(fd, buffer + offset, BUFFER_SIZE - offset - 1)) > 0) {
+        buffer[bytes_read + offset] = '\0'; // Null-terminate the buffer
+        char *line_start = buffer;
+        char *line_end;
+        
+        while ((line_end = strchr(line_start, '\n')) != NULL) {
+            *line_end = '\0'; // Terminate the line
+            if (regexec(&regex, line_start, 2, matches, 0) == 0) {
+                sscanf(line_start + matches[1].rm_so, "%lu", &value);
+                break;
+            }
+            line_start = line_end + 1;
+        }
+        
+        if (line_end == NULL) {
+            // If we didn't find a newline, move the remaining buffer contents to the beginning
+            offset = strlen(line_start);
+            memmove(buffer, line_start, offset);
+        } else {
+            offset = 0;
+        }
+        
+        if (line_end != NULL) {
+            break; // Break the outer while loop if value has been found
         }
     }
 
+    // Clean up
     regfree(&regex);
-    fclose(fp);
+    close(fd);
+
     return value;
 }
 
