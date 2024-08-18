@@ -127,8 +127,8 @@ eb3t ya ghaly >>>
 - [ ] **Redirection with Piping**: Add input and output redirection support in conjunction with piping.
 
 #### `fix`:
-- [ ] **Echo Errors**: Address and resolve any existing errors related to the echo command.
-- [ ] **Segmentation Fault Errors**: Correct segmentation fault errors to enhance stability.
+- [X] **Echo Errors**: Address and resolve any existing errors related to the echo command.
+- [X] **Segmentation Fault Errors**: Correct segmentation fault errors to enhance stability.
 
 #### `Improvements`:
-- [ ] **Optimization**: Improve performance by using more system calls instead of the standard C library (libc) functions.
+- [X] **Optimization**: Improve performance by using more system calls instead of the standard C library (libc) functions.
