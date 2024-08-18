@@ -170,7 +170,7 @@ void pipCmd(int argc, char *argv[])
 {
     if (argc < 3)
     {
-        fprintf(stderr, "Usage: [command1] x '|' [command2] x \n", argv[0]);
+        fprintf(stderr, "Usage: [command1] x '|' [command2] x \n");
 
         return;
     }
@@ -299,7 +299,7 @@ int main()
             args = NULL;
         }
 
-        if (input[0] == '\n')
+        if (input[0] == '\n' || input[0] == ' ')
             continue;
 
         parse_input(input, &args, &arg_count);
