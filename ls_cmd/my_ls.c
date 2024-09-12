@@ -132,6 +132,7 @@ void parse_input(int argc, char *argv[], int *flags, char *path)
             break;
         case 'f':
             *flags |= 0x040;
+            color = 1 ^ color;
             break;
         case 'd':
             *flags |= 0x080;
@@ -183,6 +184,11 @@ int process_and_sort(const char *path, int flags, file_info **files, int *capaci
 
     while ((entry = readdir(dir)) != NULL)
     {
+        if (flags & 0x040) // -f
+        {
+            flags |= 0x002;
+        }
+
         if (!(flags & 0x002) && entry->d_name[0] == '.')
             continue;
 
