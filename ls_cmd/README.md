@@ -108,9 +108,11 @@ Examples (test is a folder with all file types of linux):
     3186955 STM32CubeIDE  3014671 Documents     3014667 Desktop       3014901 snap   
    ```
 
+## Upcoming
+- [ ] Coloring for all Linux files.
+
+
 ## Limitations
 
 It dosen't not cover all the options of the system's built-in `ls` command. 
 
-## Upcoming
-coloring for all Linux files.
