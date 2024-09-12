@@ -20,6 +20,7 @@ This project is a custom implementation of the `ls` command. Made with dynamic m
 - Formatted output for both long listing and column-based display
 - Support for processing multiple directories
 - Options parsing with different styles (as shown in examples)
+- Support for ls standard file coloring (use long option --color)
 
 
 ## Usage
@@ -107,9 +108,6 @@ Examples (test is a folder with all file types of linux):
     3014670 Public        3014669 Templates     3014668 Downloads     3014674 Videos        3014673 Pictures      
     3186955 STM32CubeIDE  3014671 Documents     3014667 Desktop       3014901 snap   
    ```
-
-## Upcoming
-- [ ] Coloring for all Linux files.
 
 
 ## Limitations
