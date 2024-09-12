@@ -25,6 +25,7 @@ typedef struct
 char **currPath = NULL;
 int currDir = 0;
 int pathCapacity = 0;
+int color = 0;
 
 void parse_input(int argc, char *argv[], int *flags, char *path);
 int process_and_sort(const char *path, int flags, file_info **files, int *capacity);
@@ -94,11 +95,23 @@ void parse_input(int argc, char *argv[], int *flags, char *path)
     }
 
     int opt;
+    int option_index = 0;
     *flags = 0;
-    while ((opt = getopt(argc, argv, "latucifd1")) != -1)
+
+    static struct option long_options[] = {
+        {"color", no_argument, 0, 0},
+        {0, 0, 0, 0}};
+
+    while ((opt = getopt_long(argc, argv, "latucifd1", long_options, &option_index)) != -1)
     {
         switch (opt)
         {
+        case 0:
+            if (strcmp(long_options[option_index].name, "color") == 0)
+            {
+                color = 1;
+            }
+            break;
         case 'l':
             *flags |= 0x001;
             break;
@@ -125,6 +138,9 @@ void parse_input(int argc, char *argv[], int *flags, char *path)
             break;
         case '1':
             *flags |= 0x100;
+            break;
+        case 'C':
+            color = 1;
             break;
         default:
             fprintf(stderr, "Usage: %s [-latucifd1] [path]\n", argv[0]);
@@ -278,7 +294,6 @@ int process_and_sort(const char *path, int flags, file_info **files, int *capaci
         return 1;
     }
 
-
     if (!(flags & 0x040)) // If -f is not set
     {
         if (flags & 0x004) // -t option
@@ -336,8 +351,59 @@ void get_permissions(mode_t mode, char *perms)
         perms[2] = (mode & S_IXUSR) ? 's' : 'S';
     if (mode & S_ISGID)
         perms[5] = (mode & S_IXGRP) ? 's' : 'S';
-    if (mode & 01000) //sticky bit
+    if (mode & 01000) // sticky bit
         perms[8] = (mode & S_IXOTH) ? 't' : 'T';
+}
+
+void colorize_file(file_info file)
+{
+    mode_t mode = file.st.st_mode;
+
+    if (S_ISDIR(mode) && (mode & 01000))
+    {
+        // Sticky directory: white text on blue background
+        printf("\033[37;44m");
+    }
+    else if (S_ISDIR(mode))
+    {
+        // Directory: blue
+        printf("\033[34m");
+    }
+    else if (S_ISREG(mode) && (mode & S_IXUSR))
+    {
+        // Executable: green
+        printf("\033[32m");
+    }
+    else if (S_ISREG(mode) && (mode & S_ISUID))
+    {
+        // Setuid: white text on red background
+        printf("\033[37;41m");
+    }
+    else if (S_ISREG(mode) && (mode & S_ISGID))
+    {
+        // Setgid: black text on yellow background
+        printf("\033[30;43m");
+    }
+    else if (S_ISCHR(mode) || S_ISBLK(mode))
+    {
+        // Block/Char device: bold yellow
+        printf("\033[1;33m");
+    }
+    else if (S_ISFIFO(mode))
+    {
+        // FIFO: yellow
+        printf("\033[33m");
+    }
+    else if (S_ISSOCK(mode))
+    {
+        // Socket: magenta
+        printf("\033[35m");
+    }
+    else if (S_ISLNK(mode))
+    {
+        // Symlink: cyan
+        printf("\033[36m");
+    }
 }
 
 void print_output(file_info *files, int count, int flags)
@@ -380,13 +446,13 @@ void print_output(file_info *files, int count, int flags)
         long long total_blocks = 0;
         for (int i = 0; i < count; i++)
             total_blocks += files[i].st.st_blocks;
-        printf("total %lld\n", total_blocks/2);  // I don't know why but real ls div by 2
+        printf("total %lld\n", total_blocks / 2); // I don't know why but real ls div by 2
     }
 
     if (!(flags & 0x001) && !(flags & 0x100))
     {
 
-        int col_width = max_filename_len + 2; 
+        int col_width = max_filename_len + 2;
         int num_cols = terminal_width / col_width;
         if (num_cols == 0)
             num_cols = 1;
@@ -401,10 +467,13 @@ void print_output(file_info *files, int count, int flags)
                 {
                     if (flags & 0x020)
                     { // -i option (inode)
-                        printf("%*lu %-*s", (int)max_inode_len, files[index].st.st_ino, col_width, files[index].name);
+                        printf("%*lu ", (int)max_inode_len, files[index].st.st_ino);
                     }
-                    else
-                        printf("%-*s", col_width, files[index].name);
+
+                    if (color)
+                        colorize_file(files[index]);
+                    printf("%-*s", col_width, files[index].name);
+                    printf("\033[0m");
                 }
             }
             printf("\n");
@@ -448,14 +517,18 @@ void print_output(file_info *files, int count, int flags)
 
                 strftime(time_str, sizeof(time_str), "%b %d %H:%M", localtime(&time_to_use));
 
-                printf("%s %2lu %-*s %-*s %*lld %s %s",
+                printf("%s %2lu %-*s %-*s %*lld %s ",
                        perms,
                        files[i].st.st_nlink,
                        (int)max_pw_len, pw ? pw->pw_name : "",
                        (int)max_gr_len, gr ? gr->gr_name : "",
                        (int)max_size_len, (long long)files[i].st.st_size,
-                       time_str,
-                       files[i].name);
+                       time_str);
+
+                if (color)
+                    colorize_file(files[i]);
+                printf("%s", files[i].name);
+                printf("\033[0m");
 
                 if (S_ISLNK(files[i].st.st_mode) && files[i].linkname)
                 {
@@ -465,62 +538,64 @@ void print_output(file_info *files, int count, int flags)
             }
             else
             {
+                if (color)
+                    colorize_file(files[i]);
                 printf("%s%s", files[i].name, (flags & 0x100) ? "\n" : "  ");
+                printf("\033[0m");
             }
         }
     }
 }
 
-    int main(int argc, char *argv[])
+int main(int argc, char *argv[])
+{
+    int flags;
+    char path[MAX_PATH];
+    file_info *files = NULL;
+    int capacity = 0;
+
+    parse_input(argc, argv, &flags, path);
+
+    int count = process_and_sort(path, flags, &files, &capacity);
+    if (count < 0)
     {
-        int flags;
-        char path[MAX_PATH];
-        file_info *files = NULL;
-        int capacity = 0;
+        return EXIT_FAILURE;
+    }
 
-        parse_input(argc, argv, &flags, path);
+    print_output(files, count, flags);
 
-        int count = process_and_sort(path, flags, &files, &capacity);
-        if (count < 0)
+    // Free allocated memory
+    for (int i = 0; i < count; i++)
+    {
+        free(files[i].name);
+        free(files[i].linkname);
+    }
+    free(files);
+
+    for (int i = 0; i < currDir; i++)
+    {
+        free(currPath[i]);
+    }
+    free(currPath);
+
+    if (!(flags & 0x080) && optind < argc - 1)
+    {
+        for (int i = optind + 1; i < argc; i++)
         {
-            return EXIT_FAILURE;
-        }
-
-        print_output(files, count, flags);
-
-        // Free allocated memory
-        for (int i = 0; i < count; i++)
-        {
-            free(files[i].name);
-            free(files[i].linkname);
-        }
-        free(files);
-
-        for (int i = 0; i < currDir; i++)
-        {
-            free(currPath[i]);
-        }
-        free(currPath);
-
-
-        if (!(flags & 0x080) && optind < argc - 1)
-        {
-            for (int i = optind + 1; i < argc; i++)
+            printf("\n%s:\n", argv[i]);
+            count = process_and_sort(argv[i], flags, &files, &capacity);
+            if (count > 0)
             {
-                printf("\n%s:\n", argv[i]);
-                count = process_and_sort(argv[i], flags, &files, &capacity);
-                if (count > 0)
+                print_output(files, count, flags);
+                for (int j = 0; j < count; j++)
                 {
-                    print_output(files, count, flags);
-                    for (int j = 0; j < count; j++)
-                    {
-                        free(files[j].name);
-                        free(files[j].linkname);
-                    }
-                    free(files);
+                    free(files[j].name);
+                    free(files[j].linkname);
                 }
+                free(files);
             }
         }
-
-        return EXIT_SUCCESS;
     }
+
+    return EXIT_SUCCESS;
+}
