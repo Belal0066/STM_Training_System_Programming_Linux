@@ -17,3 +17,7 @@ Two projects focused on managing heap memory in C: a simulation of a Heap Memory
 ## [fdskL](fdisk_l)
 
 A command-line utility for displaying partition information on disk devices. This tool supports both MBR (Master Boot Record) and GPT (GUID Partition Table) partition schemes and provides detailed information about each partition.
+
+## [ls Command](ls_cmd)
+
+This project is a custom implementation of the ls command. Made with dynamic memory allocation, allowing it to handle directories of any size efficiently. This implementation supports many of the common flags used with the standard ls command and provides formatted output.
