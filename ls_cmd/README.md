@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a custom implementation of the `ls` command. Made with dynamic memory allocation, allowing it to handle directories of any size efficiently. This implementation supports many of the common flags used with the standard `ls` command and provides formatted output for both long listing and column-based display.
+This project is a custom implementation of the `ls` command. Made with dynamic memory allocation, allowing it to handle directories of any size efficiently. This implementation supports many of the common flags used with the standard `ls` command and provides formatted output.
 
 ## Features
 
