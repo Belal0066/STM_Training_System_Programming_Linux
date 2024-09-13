@@ -33,7 +33,7 @@ void print_output(file_info *files, int count, int flags);
 char get_file_type(mode_t mode);
 void get_permissions(mode_t mode, char *perms);
 
-// Comparison functions for sorting
+// Comp functions for sorting
 int compare_name(const void *a, const void *b)
 {
     return strcmp(((file_info *)a)->name, ((file_info *)b)->name);
@@ -452,7 +452,7 @@ void print_output(file_info *files, int count, int flags)
         long long total_blocks = 0;
         for (int i = 0; i < count; i++)
             total_blocks += files[i].st.st_blocks;
-        printf("total %lld\n", total_blocks / 2); // I don't know why but real ls div by 2
+        printf("total %lld\n", total_blocks / 2); //ls block size is 1024 
     }
 
     if (!(flags & 0x001) && !(flags & 0x100))
