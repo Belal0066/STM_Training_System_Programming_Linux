@@ -110,6 +110,9 @@ Examples (test is a folder with all file types of linux):
    ```
 
 
+## Upcoming
+- [ ] code refactoring and organizing
+
 ## Limitations
 
 It dosen't not cover all the options of the system's built-in `ls` command. 
