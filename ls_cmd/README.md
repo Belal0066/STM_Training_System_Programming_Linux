@@ -110,8 +110,13 @@ Examples (test is a folder with all file types of linux):
    ```
 
 
-## Upcoming
-- [ ] code refactoring and organizing
+
+
+https://github.com/user-attachments/assets/f061b4f9-4dd2-416a-9bf2-27c209a225a4
+
+
+
+
 
 ## Limitations
 
