@@ -1,4 +1,4 @@
-# IPC: Shop Shop Simulation
+# IPC: Shop Simulation
 
 A multi-process shop Simulation implemented in C, demonstrating efficient use of Linux IPC mechanisms.
 
