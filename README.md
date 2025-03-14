@@ -22,7 +22,7 @@ July 2024 – February 2025
 
 # Tasks
 
-## [C Compilation and Symbol Analysis](C_compilation_and_symbol_analysis)
+## [C Compilation and Symbol Analysis](C_Compilation_and_Symbol_Analysis)
 This project contains a C program split into two files: `prime.c` and `main.c`. One file contains a function and a global variable (used in this function), and the second one contains the main function and uses the function defined in the first file.
 
 ## [ELF Parser](Elf_parser)
@@ -47,8 +47,8 @@ This project is a custom implementation of the ls command. Made with dynamic mem
 A lightweight HTTP server implementation in C that handles basic web requests, serves static files, generates directory listings, and supports CGI script execution.
 
 ## [Signals](Signals)
-- #### [Non-Blocking Wait](Signals/task_1): Implements a mechanism to wait for signals without blocking the main process, allowing for more responsive applications.
-- #### [Real-Time Logger](Signals/task_3): A logging system that utilizes real-time signals to log events and messages efficiently.
+- #### [Non-Blocking Wait](Signals/Non-Blocking_Wait): Implements a mechanism to wait for signals without blocking the main process, allowing for more responsive applications.
+- #### [Real-Time Logger](Signals/Real-Time_Logger): A logging system that utilizes real-time signals to log events and messages efficiently.
 
 
 ## [IPC: Shop Simulation](IPC)
