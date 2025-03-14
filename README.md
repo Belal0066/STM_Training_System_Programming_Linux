@@ -48,7 +48,7 @@ A lightweight HTTP server implementation in C that handles basic web requests, s
 
 ## [Signals](Signals)
 - #### [Non-Blocking Wait](Signals/Non-Blocking_Wait): Implements a mechanism to wait for signals without blocking the main process, allowing for more responsive applications.
-- #### [Real-Time Logger](Signals/Real-Time_Logger): A logging system that utilizes real-time signals to log events and messages efficiently.
+- #### [Real-Time Logger](Signals/real-time_logger): A logging system that utilizes real-time signals to log events and messages efficiently.
 
 
 ## [IPC: Shop Simulation](IPC)
