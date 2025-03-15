@@ -22,7 +22,7 @@ July 2024 – February 2025
 
 # Tasks
 
-## [C Compilation and Symbol Analysis](C_Compilation_and_Symbol_Analysis)
+## [C Compilation and Symbol Table Analysis](C_Compilation_and_Symbol_Analysis)
 This project contains a C program split into two files: `prime.c` and `main.c`. One file contains a function and a global variable (used in this function), and the second one contains the main function and uses the function defined in the first file.
 
 ## [ELF Parser](Elf_parser)
